@@ -3,10 +3,10 @@
 
 from flask.cli import FlaskGroup
 
-from api import create_app, db
+from api import app, db
 from api.blueprints.default.models import User
 
-cli = FlaskGroup(create_app())
+cli = FlaskGroup(app)
 
 
 @cli.command('create_db')

@@ -1,7 +1,6 @@
 commitizen==2.24.0
 coverage==6.3.2
 flake8==4.0.1
-flask-migrate==3.1.0
 mypy==0.961
 pre-commit==2.18.1
 pylint==2.13.4

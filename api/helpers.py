@@ -25,11 +25,4 @@ def are_flask_environment_variable_set() -> bool:
         print('The FLASK_ENV is not set')
         return False
 
-    try:
-        os.environ['FLASK_APP']  # pylint: disable=W0104
-        print('The FLASK_APP is set')
-    except KeyError:
-        print('The FLASK_APP is not set')
-        return False
-
     return True
