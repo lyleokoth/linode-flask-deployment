@@ -42,4 +42,4 @@ create-db:
 seed-db:
 	@python manage.py seed_db
 
-all: update install install-dev pre-commit initial-tag test create-db seed-db run
+all: update install install-dev pre-commit initial-tag initialize-db test create-db seed-db run
