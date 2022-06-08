@@ -18,7 +18,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: secrets.POSTGRES_USER
+          POSTGRES_USER: ${{secrets.POSTGRES_USER}}
           POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
           POSTGRES_PORT: ${{secrets.POSTGRES_PORT}}
           POSTGRES_DB: ${{secrets.POSTGRES_DB}}_test
@@ -70,6 +70,9 @@ jobs:
         echo POSTGRES_PORT=${{secrets.POSTGRES_PORT}} >> .env
         echo POSTGRES_USER=${{secrets.POSTGRES_USER}} >> .env
         echo POSTGRES_PASSWORD=${{secrets.POSTGRES_PASSWORD}} >> .env
+
+    - name: Create the test tables
+      run: python manage.py create_db
 
     - name: Test with pytest
       run: |
