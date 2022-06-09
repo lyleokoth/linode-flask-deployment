@@ -5,35 +5,30 @@ import sys
 
 from dotenv import load_dotenv
 from flask import Flask
-from flask_migrate import Migrate
 
 from .blueprints.default.views import default
 from .blueprints.extensions import db
-from .helpers import are_flask_environment_variable_set
+from .error_handlers import handle_bad_request
+from .extensions import migrate
+from .helpers import are_environment_variables_set, set_flask_environment
 
 load_dotenv()
 
-if not are_flask_environment_variable_set():
+
+if not are_environment_variables_set():
     print('Application existing...')
     sys.exit(1)
+
 
 app = Flask(__name__)
 app.register_blueprint(default)
 
-if os.getenv('FLASK_ENV') == 'production':  # pragma: no cover
-    app.config.from_object('api.config.ProductionConfig')
-elif os.getenv('FLASK_ENV') == 'development':  # pragma: no cover
-    app.config.from_object('api.config.DevelopmentConfig')
-elif os.getenv('FLASK_ENV') == 'stage':  # pragma: no cover
-    app.config.from_object('api.config.StagingConfig')
-elif os.getenv('FLASK_ENV') == 'test':
-    app.config.from_object('api.config.TestingConfig')
-else:
-    app.config.from_object('api.config.DevelopmentConfig')
+set_flask_environment(app)
 
 print(f"The configuration used is for {os.environ['FLASK_ENV']} environment.")
 print(f"The database connection string is {app.config['SQLALCHEMY_DATABASE_URI']}.")
 
 db.init_app(app=app)
-migrate = Migrate()
 migrate.init_app(app, db)
+
+app.register_error_handler(400, handle_bad_request)

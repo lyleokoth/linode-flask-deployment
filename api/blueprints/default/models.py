@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """This module contains the database models used by the default blueprint."""
 from dataclasses import dataclass
-from enum import unique
-
-from flask_sqlalchemy import SQLAlchemy
 
 from ..extensions import db
+from .constants import EMAIL_MAX_LENGTH
 
 
 @dataclass
@@ -23,8 +21,10 @@ class User(db.Model):
 
     """
 
+    __tablename__ = 'users'
+
     id: int = db.Column(db.Integer, primary_key=True)
-    email: str = db.Column(db.String(120), unique=True, nullable=False)
+    email: str = db.Column(db.String(EMAIL_MAX_LENGTH), unique=True, nullable=False)
     active: bool = db.Column(db.Boolean(), default=True, nullable=False)
 
     def __init__(self, email: str) -> None:
@@ -39,3 +39,8 @@ class User(db.Model):
             The user's email
         """
         self.email = email
+
+    def get_user(self) -> dict:
+        """Get user data."""
+        user = dict(id=self.id, email=self.email)
+        return user
