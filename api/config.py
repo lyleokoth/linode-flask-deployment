@@ -62,7 +62,7 @@ class StagingConfig(BaseConfig):
     """Configuration used during staging."""
 
     SECRET_KEY = os.getenv('SECRET_KEY', 'secret_key')
-    DEBUG = True
+    DEBUG = False
     TESTING = False
 
     POSTGRES_HOST = os.environ['POSTGRES_HOST']
